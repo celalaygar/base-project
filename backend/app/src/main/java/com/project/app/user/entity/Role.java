@@ -2,7 +2,8 @@ package com.project.app.user.entity;
 
 public enum Role {
     ADMIN("ADMIN"),
-    MANAGER("MÜDÜR");
+    MANAGER("MÜDÜR"),
+    PASSIVE("PASİF");
 
 
     private String value;

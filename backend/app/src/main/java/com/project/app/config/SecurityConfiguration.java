@@ -41,7 +41,7 @@ public class SecurityConfiguration {
                                 "/api/roles",
                                 "/error",
                                 "/api/registration").permitAll()
-                        .anyRequest().fullyAuthenticated()
+                                .requestMatchers("/api/v1/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER","ROLE_PASSIVE")              //.requestMatchers("/api/v1/**").authenticated()
                 )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout((logout) -> logout.permitAll().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout", "POST")))

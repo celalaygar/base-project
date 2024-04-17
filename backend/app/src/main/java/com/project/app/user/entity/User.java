@@ -50,7 +50,7 @@ public class User implements Serializable, UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = Arrays.asList(this.role)
             .stream()
-            .map(role -> new SimpleGrantedAuthority(role.getValue()))
+            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
             .collect(Collectors.toList());
         return list;
     }
