@@ -7,6 +7,7 @@ import com.project.app.user.dto.UserSearchDto;
 import com.project.app.user.repository.UserRepository;
 import com.project.app.user.service.UserServiceImpl;
 import com.project.app.util.ApiPathConstant;
+import com.project.app.util.HeaderConstant;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,7 +51,7 @@ public class UserApi {
     @GetMapping("/search")
     public ResponseEntity<Page<UserDto>> search(
             @PageableDefault(size =25, sort = "username", direction = Sort.Direction.ASC ) Pageable page,
-            @RequestHeader("Authorization") String authHeader) throws Exception {
+            @RequestHeader(HeaderConstant.AUTHORIZATION) String authHeader) throws Exception {
         Page<UserDto> list =  userServiceImpl.search(page,authHeader);
         return new ResponseEntity<Page<UserDto>>(list, new HttpHeaders(), HttpStatus.OK);
     }
@@ -58,7 +59,7 @@ public class UserApi {
     @PostMapping("/page")
     public ResponseEntity<Page<UserDto>> page(
             @PageableDefault(size =25, sort = "userId", direction = Sort.Direction.ASC ) Pageable page,
-            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader(HeaderConstant.AUTHORIZATION) String authHeader,
             @RequestBody UserSearchDto dto) throws Exception {
         return ResponseEntity.ok(userServiceImpl.page(page,authHeader, dto));
 
@@ -66,20 +67,20 @@ public class UserApi {
 
     @GetMapping
     public ResponseEntity<UserDto> getYourSelf(
-            @RequestHeader("Authorization") String authHeader) throws Exception {
+            @RequestHeader(HeaderConstant.AUTHORIZATION) String authHeader) throws Exception {
         return ResponseEntity.ok(userServiceImpl.getYourSelf(authHeader));
     }
 
     @PostMapping("/update-my-password")
     public ResponseEntity<?> updateMyPassword(
-            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader(HeaderConstant.AUTHORIZATION) String authHeader,
             @RequestBody UserPasswordUpdateDto dto) throws Exception {
         return ResponseEntity.ok(userServiceImpl.updateMyPassword(authHeader,dto));
     }
 
     @PutMapping("update/{username}")
     public ResponseEntity<Boolean> updateYourSelf(
-            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader(HeaderConstant.AUTHORIZATION) String authHeader,
             @Valid @RequestBody UserDto userDto) throws Exception {
         return ResponseEntity.ok(userServiceImpl.updateYourSelf(authHeader, userDto));
     }

@@ -26,14 +26,9 @@ public class JwtService {
 
     @Value("${jwt.secret-key}")
     private String SECRET;
+
     @Value("${jwt.expiration-date}")
     private long jwtExpirationDate;
-
-
-    private String jwtTokenPrefix = "Bearer";
-
-    private String jwtHeaderString = "Authorization";
-
 
     public String generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
@@ -45,8 +40,6 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationDate))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS512).compact();
     }
-
-
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
