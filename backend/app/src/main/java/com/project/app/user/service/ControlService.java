@@ -27,7 +27,7 @@ public class ControlService {
 	public String getUsernameFromToken(String authHeader) {
 		String username= null;
 		if(authHeader != null ) {
-			username = jwtService.getUsernameFromToken(authHeader);
+			username = jwtService.extractUsername(authHeader);
 		}
 		return username;
 	}

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(ApiPathConstant.BASE_PATH)
@@ -41,10 +42,14 @@ public class LoginApi {
 			if(!authentication.isAuthenticated()){
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
 			}
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String jwt = jwtService.generateToken(authentication);
 			String username = autRequest.getUsername();
 			User user = userService.findByUsername(username);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			String jwt = jwtService.generateToken(user);
+
+			if(user == null){
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
+			}
 
 			return ResponseEntity.ok(new AuthResponseDto(user.getUserId(), username,jwt,null,user.getRole()));
 		}catch (Exception e) {
@@ -52,14 +57,5 @@ public class LoginApi {
 		}
 	}
 
-	@GetMapping("/roles")
-	public ResponseEntity<List<RoleDto>> getAllRoles() {
-		List<Role> roles= Arrays.asList(Role.values());
-		ArrayList<RoleDto> list= new ArrayList<>();
-		roles.forEach(role->{
-			list.add(new RoleDto(role, role.getValue()));
-		});
-		return ResponseEntity.ok(list);
-	}
 
 }

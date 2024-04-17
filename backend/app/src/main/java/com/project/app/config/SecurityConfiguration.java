@@ -1,4 +1,4 @@
-package com.project.app.auth.config;
+package com.project.app.config;
 
 import com.project.app.auth.service.JwtService;
 import com.project.app.filter.JwtAuthenticationFilter;
@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                         .requestMatchers(
                                 "/logout/default/**",
                                 "/api/login",
+                                "/api/roles",
                                 "/error",
                                 "/api/registration").permitAll()
                         .anyRequest().fullyAuthenticated()
