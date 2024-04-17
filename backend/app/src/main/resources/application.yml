@@ -1,0 +1,30 @@
+
+server:
+  port: 8500
+spring:
+  application:
+    name: app
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/note
+    password: celal371
+    username: postgres
+    platform: postgresql
+  jpa:
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  main:
+    allow-circular-references: true
+  data:
+    web:
+      pageable:
+        default-page-size: 5
+        max-page-size: 100
+
+
+
+jwt:
+  secret-key: 1A4E6359665A6A541E3272357518782F412F4428472B4B6250645A675661597A
+  expiration-date: 86400000
