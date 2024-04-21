@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -65,21 +66,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("an error occured during getting username from token"+ e);
         } catch (ExpiredJwtException e) {
             System.out.println("the token is expired and not valid anymore"+ e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
                     "the token is expired and not valid anymore");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } catch (SignatureException e) {
             System.out.println("Authentication Failed. Username or Password not valid.");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
                     "Authentication Failed. Username or Password not valid.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         } catch (MalformedJwtException exception) {
             System.out.println("Request to parse invalid JWT : failed : {}"+ exception.getMessage());
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+            response.sendError(HttpServletResponse.SC_FORBIDDEN,
                     "Request to parse invalid JWT");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         }catch (Exception exception) {
             System.out.println("Exception : {}"+ exception.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Exception");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
 
